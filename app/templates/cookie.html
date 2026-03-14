@@ -1,6 +1,21 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-<h2>Cookie Created</h2>
-<p>A cookie named "site" has been stored.</p>
+
+<h2>Set Cookie Example</h2>
+
+<p>The server has stored the following cookies in your browser:</p>
+
+<ul>
+    <li><b>Site Name:</b> Django Learning Site</li>
+    <li><b>Visit Time:</b> Current time when you opened this page</li>
+</ul>
+
+<p>
+Now the browser has these cookies.  
+Click below to read them.
+</p>
+
+<a href="/showcookie">Show Stored Cookies</a>
+
 {% endblock %}

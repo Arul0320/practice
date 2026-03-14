@@ -2,8 +2,16 @@
 
 {% block content %}
 
-<h2>Email Sent Successfully</h2>
+<form method="post">
+    {% csrf_token %}
 
-<p>Email sent using SMTP configuration.</p>
+    <input type="text" name="name" placeholder="Enter your name">
+    <button type="submit">Send Email</button>
+
+</form>
+
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
 
 {% endblock %}

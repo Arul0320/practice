@@ -1,11 +1,20 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
 
-<h2>Session Example</h2>
+<h2>Show Cookie Example</h2>
 
-<p>Username stored in session:</p>
+{% if site %}
+<p><b>Site Name:</b> {{ site }}</p>
+<p><b>Visit Time:</b> {{ visit_time }}</p>
 
-<h4>{{ data }}</h4>
+<p>These values were read from the browser cookies.</p>
+
+{% else %}
+<p>No cookies found. Please create cookies first.</p>
+
+<a href="/cookie">Set Cookie</a>
+
+{% endif %}
 
 {% endblock %}

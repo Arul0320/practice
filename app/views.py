@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect
 from .forms import ContactForm
 from .models import Contact
@@ -12,20 +14,32 @@ def home(request):
 # 2 Session Example
 def session_demo(request):
     request.session['username'] = "Student"
-    return render(request, 'session.html', {'name': request.session['username']})
+    request.session['login_time'] = str(datetime.now())
+
+    context = {
+        'name': request.session['username'],
+        'time': request.session['login_time']
+    }
+    return render(request, 'session.html', context)
 
 
 # 3 Cookie Example
 def cookie_demo(request):
     response = render(request, 'cookie.html')
     response.set_cookie('site', 'DjangoLab')
+    response.set_cookie('visit_time', str(datetime.now()))
     return response
 
 
 # 4 Display Cookie
 def cookie_show(request):
     data = request.COOKIES.get('site')
-    return render(request, 'cookie_show.html', {'data': data})
+    visit_time = request.COOKIES.get('visit_time')
+    context = {
+        'site': data,
+        'visit_time': visit_time
+    }
+    return render(request, 'cookie_show.html', context)
 
 
 # 5 Contact Form (Save to DB)
@@ -48,16 +62,21 @@ def contact_success(request):
 
 # 7 Send Email using SMTP
 def send_email_view(request):
+    message = ""
+    if request.method == "POST":
+        name = request.POST.get('name')
+    
+        send_mail(
+            "Test Email",
+            f"Hello {name}, this is a test email from Django.",
+            settings.EMAIL_HOST_USER,
+            [settings.EMAIL_HOST_USER],
+            fail_silently=False
+        )
+        
+        message = "Email sent successfully!" 
 
-    send_mail(
-        "Test Email from Django",
-        "This email is sent using SMTP configuration.",
-        settings.EMAIL_HOST_USER,
-        [settings.EMAIL_HOST_USER],
-        fail_silently=False
-    )
-
-    return render(request, 'email.html')
+    return render(request, 'email.html' , {'message': message})
 
 
 # 8 Retrieve Data from Database
